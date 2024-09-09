@@ -1,8 +1,6 @@
 package com.example.fetchcodingexercise;
 
-import android.content.ClipData;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -10,9 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -22,6 +20,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
+
+    //RecyclerView itemRV = findViewById(R.id.itemRecyclerView);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<ItemModel>> call, Response<List<ItemModel>> response) {
                 List<ItemModel> items = response.body();
+                initRecyclerView(items);
             }
 
             @Override
@@ -57,6 +58,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void initRecyclerView(List<ItemModel> model) {
+        RecyclerView itemRV = findViewById(R.id.itemRecyclerView);
+        ItemAdaptor itemAdaptor = new ItemAdaptor(this, model);
+        itemRV.setLayoutManager(new LinearLayoutManager(this));
+        itemRV.setAdapter(itemAdaptor);
     }
 
 
