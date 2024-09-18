@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
     private void initRecyclerView(List<ItemModel> model) {
         RecyclerView itemRV = findViewById(R.id.itemRecyclerView);
         ItemAdaptor itemAdaptor = new ItemAdaptor(this, model);
+        itemAdaptor.filterItems();
+        itemAdaptor.sortItems();
         itemRV.setLayoutManager(new LinearLayoutManager(this));
         itemRV.setAdapter(itemAdaptor);
     }

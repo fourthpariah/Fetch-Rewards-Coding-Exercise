@@ -9,15 +9,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> {
 
-    private final Context context;
     private final List<ItemModel> itemModelList;
 
     public ItemAdaptor(Context context, List<ItemModel> itemModelList) {
-        this.context = context;
         this.itemModelList = itemModelList;
     }
 
@@ -31,6 +31,7 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ItemAdaptor.ViewHolder holder, int position) {
         ItemModel model = itemModelList.get(position);
+
         holder.itemID.setText(model.getItemId().toString());
         holder.itemListID.setText(model.getItemListId().toString());
         holder.itemName.setText(model.getItemName());
@@ -52,5 +53,14 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> {
             itemListID = itemView.findViewById(R.id.textViewListId);
             itemName = itemView.findViewById(R.id.textViewName);
         }
+    }
+
+    public void filterItems() {
+        itemModelList.removeIf(item -> item.getItemName() == null || Objects.equals(item.getItemName(), ""));
+
+    }
+
+    public void sortItems() {
+        itemModelList.sort(Comparator.comparing(ItemModel::getItemListId).thenComparing(ItemModel::getItemName));
     }
 }
