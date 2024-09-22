@@ -30,9 +30,12 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> {
     public void onBindViewHolder(@NonNull ItemAdaptor.ViewHolder holder, int position) {
         ItemModel model = itemModelList.get(position);
 
-        holder.itemID.setText("ID: "+ model.getItemId().toString());
-        holder.itemListID.setText("List: " + model.getItemListId().toString());
-        holder.itemName.setText("Name: " + model.getItemName());
+        String idString = "ID: " + model.getItemId().toString();
+        String listIdString = "List: " + model.getItemListId().toString();
+        String itemNameString = "Name: " + model.getItemName();
+        holder.itemID.setText(idString);
+        holder.itemListID.setText(listIdString);
+        holder.itemName.setText(itemNameString);
     }
 
     @Override

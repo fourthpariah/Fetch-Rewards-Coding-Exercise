@@ -29,7 +29,8 @@ public class ListAdaptor extends RecyclerView.Adapter<ListAdaptor.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ListAdaptor.ViewHolder holder, int position) {
         ListModel model = listModelList.get(position);
-        holder.groupListID.setText("ListID " + model.getGroupId().toString());
+        String listIdString = "ListID " + model.getGroupId().toString();
+        holder.groupListID.setText(listIdString);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.VERTICAL, false);
 
@@ -48,7 +49,7 @@ public class ListAdaptor extends RecyclerView.Adapter<ListAdaptor.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView groupListID;
-        RecyclerView itemRecyclerView;
+        final RecyclerView itemRecyclerView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
