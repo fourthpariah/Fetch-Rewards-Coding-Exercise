@@ -11,7 +11,12 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,8 +25,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
-
-    //RecyclerView itemRV = findViewById(R.id.itemRecyclerView);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // This method just gets the JSON data and sends it to the display
     private void parseJSON() {
-        Retrofit retrofitInstance = new retrofit2.Retrofit.Builder().
+        Retrofit retrofitInstance = new Retrofit.Builder().
                 baseUrl("https://fetch-hiring.s3.amazonaws.com").
                 addConverterFactory(GsonConverterFactory.create()).
                 build();
@@ -60,14 +64,40 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // this method filters/sorts the json data and creates the display as nested recyclerviews
     private void initRecyclerView(List<ItemModel> model) {
-        RecyclerView itemRV = findViewById(R.id.itemRecyclerView);
-        ItemAdaptor itemAdaptor = new ItemAdaptor(this, model);
-        itemAdaptor.filterItems();
-        itemAdaptor.sortItems();
-        itemRV.setLayoutManager(new LinearLayoutManager(this));
-        itemRV.setAdapter(itemAdaptor);
+        filterItems(model);
+        sortItems(model);
+
+        RecyclerView groupRV = findViewById(R.id.main_recycler_view);
+
+        Map<Integer, List<ItemModel>> itemsPerID = model.stream().collect(Collectors.groupingBy(ItemModel::getItemListId));
+
+        List<ListModel> itemLists = new ArrayList<>();
+        for (Map.Entry<Integer, List<ItemModel>> group : itemsPerID.entrySet()) {
+            ListModel newList = new ListModel();
+            newList.setGroupId(group.getKey());
+            newList.setItemList(group.getValue());
+            itemLists.add(newList);
+        }
+
+        ListAdaptor listAdaptor = new ListAdaptor(itemLists);
+        groupRV.setLayoutManager(new LinearLayoutManager(this));
+        groupRV.setAdapter(listAdaptor);
     }
 
+    public void filterItems(List<ItemModel> itemModelList) {
+        itemModelList.removeIf(item -> item.getItemName() == null || Objects.equals(item.getItemName(), ""));
+
+    }
+
+    // NOTE
+    // This sorting method sorts the set of items first by listId, then by name
+    // since name is a string, they will be sorted as strings
+    // EX: [..., "Item 28", "Item 280", "Item 29",...]
+    // While this is not in numerical order, I will simply try to satisfy the directions as given
+    public void sortItems(List<ItemModel> itemModelList) {
+        itemModelList.sort(Comparator.comparing(ItemModel::getItemListId).thenComparing(ItemModel::getItemName));
+    }
 
 }

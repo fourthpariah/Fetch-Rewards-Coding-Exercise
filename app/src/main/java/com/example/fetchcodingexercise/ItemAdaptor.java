@@ -9,9 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> {
 
@@ -32,9 +30,9 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> {
     public void onBindViewHolder(@NonNull ItemAdaptor.ViewHolder holder, int position) {
         ItemModel model = itemModelList.get(position);
 
-        holder.itemID.setText(model.getItemId().toString());
-        holder.itemListID.setText(model.getItemListId().toString());
-        holder.itemName.setText(model.getItemName());
+        holder.itemID.setText("ID: "+ model.getItemId().toString());
+        holder.itemListID.setText("List: " + model.getItemListId().toString());
+        holder.itemName.setText("Name: " + model.getItemName());
     }
 
     @Override
@@ -55,12 +53,4 @@ public class ItemAdaptor extends RecyclerView.Adapter<ItemAdaptor.ViewHolder> {
         }
     }
 
-    public void filterItems() {
-        itemModelList.removeIf(item -> item.getItemName() == null || Objects.equals(item.getItemName(), ""));
-
-    }
-
-    public void sortItems() {
-        itemModelList.sort(Comparator.comparing(ItemModel::getItemListId).thenComparing(ItemModel::getItemName));
-    }
 }

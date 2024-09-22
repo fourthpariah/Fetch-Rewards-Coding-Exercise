@@ -9,28 +9,29 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/textViewID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ID" />
+            android:text="@string/id_placeholder" />
 
         <TextView
             android:id="@+id/textViewListId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/textViewID"
-            android:text="ListID" />
+            android:text="@string/listid_placeholder" />
 
         <TextView
             android:id="@+id/textViewName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/textViewListId"
-            android:text="Name" />
+            android:text="@string/name_placeholder" />
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
